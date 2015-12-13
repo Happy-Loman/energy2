@@ -149,6 +149,66 @@ $("#automation_toggle").click(function(){
     }
 });
 
+var saveName = "will";
+function saving() {
+    var save = {
+        resources:resources,
+        engines:engines,
+        forms:forms,
+        machines:machines,
+        energy:cell.energy,
+        parts:parts,
+        bots:bots,
+        curr_page:curr_page,
+        resourceBot:resourceBot,
+        generatorBot:generatorBot,
+        formsBot:formsBot,
+        //newGame:newGame,
+    }
+    localStorage.setItem(saveName, JSON.stringify(save));
+}
+
+var saveObj;
+function setObjectArray(object){
+  resources_ = [object.resources.batteries, object.resources.wires, object.resources.lightbulbs];
+  engines_ = [object.engines.generators, object.engines.chargers, object.engines.heaters];
+  forms_ = [object.forms.solars, object.forms.thermal, object.forms.chemical, object.forms.electrical];
+  machinesArr = [object.machines.camera, object.machines.automate, object.machines.botAI];
+}
+function load() {
+    saveObj = JSON.parse(localStorage.getItem(saveName));
+
+    resources = saveObj.resources;
+    engines = saveObj.engines;
+    forms = saveObj.forms;
+    machines = saveObj.machines;
+    cell.energy = saveObj.energy;
+    parts = saveObj.parts;
+    bots = saveObj.bots;
+    formsBot = saveObj.formsBot;
+    resourceBot = saveObj.resourceBot;
+    generatorBot = saveObj.generatorBot;
+    //newGame = saveObj.newGame;
+    setObjectArray(saveObj);
+}
+
+$("#tooltip_toggle").click(function(){
+    mouse.disableTooltip = !mouse.disableTooltip;
+    if(mouse.disableTooltip){
+        $("#tooltip_toggle").css("background-color", "red");
+    } else {
+        $("#tooltip_toggle").css("background-color", "transparent");
+    }
+});
+
+$("#manual_save").click(function(){
+    saving();
+    alert("Saved!");
+});
+
+$("#manual_load").click(function(){
+    load();
+});
 /*function restart(){
     for(var i = 0; i < bots.length; i++){
         var bot = bots[i];
