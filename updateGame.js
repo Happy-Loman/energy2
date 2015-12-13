@@ -85,6 +85,26 @@ function generalUpdate() {
   }
 }
 
+var FPS = 50;
+window.setInterval(function(){
+  if(loaded){
+    ctx.clearRect(0,0,map_w, map_h); 
+    camera_setter.update();
+    cell.draw();
+        //cell.update();
+    bot_draw();
+    bot_update();
+
+    update_stars();
+    update_resources();
+    update_engines();
+    update_forms();
+    update_machines();
+    generalUpdate();
+  }
+  //updateToolTipDisplay();
+}, 1000/FPS);
+
 /*var loaded = false;
 var newGame = true;
 var saveName = "will";
@@ -181,26 +201,6 @@ window.setInterval(function(){
       saving();
     }
 }, 100);
-
-var FPS = 50;
-window.setInterval(function(){
-  if(loaded){
-    ctx.clearRect(0,0,map_w, map_h); 
-    camera_setter.update();
-    cell.draw();
-        //cell.update();
-    bot_draw();
-    bot_update();
-
-    update_stars();
-    update_resources();
-    update_engines();
-    update_forms();
-    update_machines();
-    generalUpdate();
-  }
-  //updateToolTipDisplay();
-}, 1000/FPS);
 */
 /*function start(){
   window.requestAnimFrame(start);
