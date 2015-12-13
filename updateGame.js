@@ -89,10 +89,6 @@ var loaded = false;
 var newGame = true;
 var saveName = "will";
 if(JSON.parse(localStorage.getItem(saveName)) == null){
-    if(newGame){
-      //saveOgState();
-      newGame = false;
-    }
     saving();
 } else {
     load();
@@ -146,7 +142,11 @@ function saving() {
         energy:cell.energy,
         parts:parts,
         bots:bots,
-        newGame:newGame,
+        curr_page:curr_page,
+        resourceBot:resourceBot,
+        generatorBot:generatorBot,
+        formsBot:formsBot,
+        //newGame:newGame,
     }
     localStorage.setItem(saveName, JSON.stringify(save));
 }
@@ -169,17 +169,18 @@ function load() {
     cell.energy = saveObj.energy;
     parts = saveObj.parts;
     bots = saveObj.bots;
-    newGame = saveObj.newGame;
+    formsBot = saveObj.formsBot;
+    resourceBot = saveObj.resourceBot;
+    generatorBot = saveObj.generatorBot;
+    //newGame = saveObj.newGame;
     setObjectArray(saveObj);
 }
 
 window.setInterval(function(){
     if(loaded){
       saving();
-      ///console.log(saveObj.machines.camera);
-      //console.log(save.batteries);
     }
-}, 2000);
+}, 100);
 
 var FPS = 50;
 window.setInterval(function(){
