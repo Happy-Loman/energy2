@@ -285,6 +285,7 @@ var true_ = false;
 var mouse = {
   display:"Click Here",
   toolTip:false,
+  disableTooltip:false,
 }
 
 window.onmousemove = function(e){
