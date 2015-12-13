@@ -91,7 +91,7 @@ var saveName = "will";
 if(JSON.parse(localStorage.getItem(saveName)) == null){
     saving();
 } else {
-    //load();
+    load();
     loaded = true;
 }
 
