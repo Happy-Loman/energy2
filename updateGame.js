@@ -85,7 +85,7 @@ function generalUpdate() {
   }
 }
 
-var loaded = false;
+/*var loaded = false;
 var newGame = true;
 var saveName = "will";
 if(JSON.parse(localStorage.getItem(saveName)) == null){
@@ -133,7 +133,7 @@ function loadOgState() {
     setObjectArray(saveObj);
 }*/
 
-function saving() {
+/*function saving() {
     var save = {
         resources:resources,
         engines:engines,
@@ -201,7 +201,7 @@ window.setInterval(function(){
   }
   //updateToolTipDisplay();
 }, 1000/FPS);
-
+*/
 /*function start(){
   window.requestAnimFrame(start);
     ctx.clearRect(0,0,map_w, map_h);
