@@ -74,7 +74,7 @@ function update_stars(){
 function generalUpdate() {
   GID("parts").innerHTML = parts.amount.toFixed(2) + "<div style=\"font-size:18px;\">parts<div>";
   GID("energy").innerHTML = cell.energy.toFixed(2) + "<div style=\"font-size:18px;\">energy<div>";
-  if(mouse.toolTip){
+  if(mouse.toolTip && !mouse.disableTooltip){
     GID("mouse").style.display = "inline";
   } else {
     GID("mouse").style.display = "none";
@@ -113,7 +113,7 @@ if(JSON.parse(localStorage.getItem(saveName)) == null){
 } else {
     load();
     loaded = true;
-}
+}*/
 
 /*window.setInterval(function(){
   window.setTimeout(function(){
@@ -200,8 +200,8 @@ window.setInterval(function(){
     if(loaded){
       saving();
     }
-}, 100);
-*/
+}, 100);*/
+
 /*function start(){
   window.requestAnimFrame(start);
     ctx.clearRect(0,0,map_w, map_h);
