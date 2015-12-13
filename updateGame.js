@@ -87,7 +87,7 @@ function generalUpdate() {
 
 var FPS = 50;
 window.setInterval(function(){
-  if(loaded){
+  if(true){
     ctx.clearRect(0,0,map_w, map_h); 
     camera_setter.update();
     cell.draw();
