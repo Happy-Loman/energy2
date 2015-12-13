@@ -90,7 +90,7 @@ var newGame = true;
 var saveName = "will";
 if(JSON.parse(localStorage.getItem(saveName)) == null){
     if(newGame){
-      saveOgState();
+      //saveOgState();
       newGame = false;
     }
     saving();
