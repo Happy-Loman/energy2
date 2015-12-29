@@ -3,10 +3,10 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
 <script src="https://code.jquery.com/jquery-3.0.0-alpha1.js"></script>
-<script src="https://code.jquery.com/jquery-git.js"></script>
+<script src="https://code.jquery.com/jquery-git.js"></script> 
 <title>Energy</title>
-</head> 
-<body>
+</head>
+<body id="body">
 	<div id="mouse" class="mouse">
     	<div id="sub_Mouse"></div>
 	</div>
@@ -20,12 +20,19 @@
                 <div id="energy" class="finds">0e</div>
                 <div id="parts" class="finds">0p</div>
             </div>
+            <div class="get_data">
+            	Quick save/load
+            	<div id="quick_save" class="quick_get">Save</div>
+                <div id="quick_load" class="quick_get">Load</div>
+            </div>
         </div>
 
         <div class="nav">
+        	<span id="ship_nav" class="nav_pointer">Ship</span>
         	<span id="resources_nav" class="nav_pointer">Recources</span>
-        	<span id="generator_nav" class="nav_pointer">Generators</span>
-        	<span id="forms_nav" class="nav_pointer">Forms of Energy</span>
+        	<span id="generator_nav" class="nav_pointer">Engines</span>
+        	<span id="forms_nav" class="nav_pointer">Forms</span>
+        	<span id="bots_nav" class="nav_pointer">Bots</span>
         	<span id="upgrades_nav" class="nav_pointer">Upgrades</span>
         	<span id="canvas_nav" class="nav_pointer toolTip not_displayed">View Bots</span>
 
@@ -34,128 +41,228 @@
 
 		<div id="tab1" class="tabs">
 		    <div class="game_elements">
-		    	<div id="resources" class="pages">
-		    		<h1>Resources</h1>
-		    		<p>Resources are found quite easily with the current BOT technology you have. However these resources dont last very long and give a small amount of energy.</p>
-                	<div class="contain">
-                		<div id="batteries" class="button toolTip">
-            	        	<div id="batteries_bar" class="button_bar">Batteries</div>
-		    	    	</div>
-				
-						<div id="wires" class="button toolTip">
-            	        	<div id="wires_bar" class="button_bar">Wires</div>
-		    	    	</div>
-				
-						<div id="lightbulbs" class="button toolTip">
-            	        	<div id="lightbulb_bar" class="button_bar">Lightbulb</div>
-		       		 	</div>
-
-		       		 	<div id="resource_bot" class="bot toolTip">
-		        			<div id="bot_bar">Resource BOT</div>
-		        		</div>
-		        		<div id="resource_bot_number" class="bot_number">
-		        			<div id="bot_bar">0</div>
-		        		</div>
-                	</div>
+		    	<div id="ship" class="pages">
+		    		<div id="color_guide" class="guide">
+        				<div id="red" class="color">Unstable</div>
+        				<div id="yellow" class="color">Stable</div>
+        				<div id="lightblue" class="color">Neutral</div>
+        				<div id="black" class="color">Color Guide</div>
+        			</div>
+		    		<div class="sub_page">
+		    			<h1 id="ship_name_container">The <span id="ship_name">Your Ship</span></h1>
+		    			<div id="ship_energy" class="ship_button toolTip">
+		    				<div id="energy_bar">Energy</div>
+		    				<div id="ship_upgrader">+</div>
+		    			</div>
+		    			<div id="ship_engine" class="ship_button toolTip">Engine</div>
+		    			<div id="ship_shield" class="ship_button toolTip">Ehield</div>
+		    			<div id="time" class="ship_button toolTip">time</div>
+		    			<div id="ship_mass" class="ship_button toolTip">size</div>
+		    			<div id="ship_energy_rate" class="ship_button toolTip">Consume Rate</div>
+		    			<div id="ship_oxygen_lvl" class="ship_button toolTip">O2</div>
+		    			<div id="ship_food" class="ship_button toolTip">Food</div>
+		    			<div id="ship_gravity" class="ship_button toolTip">Gravity</div>
+		    		</div>
 		    	</div>
-				
-		        <div id="generator" class="not_displayed pages">
-		        	<div class="contain">
-		        		<h1>Generators</h1>
-		        		<p>Generator are more complex machines, we need more advance BOT in order to find Generators. These Generators do produce a lot of energy and last quite long</p>
-						<div id="generators" class="button toolTip">
-            	        	<div id="generators_bar" class="button_bar">Generator</div>
-		    	    	</div>
-				
-						<div id="chargers" class="button toolTip">
-                	    	<div id="chargers_bar" class="button_bar">Charger</div>
-		    	    	</div>
-				
-						<div id="heaters" class="button toolTip">
-                    		<div id="heaters_bar" class="button_bar">Heat</div>
-		        		</div>
 
-		        		<div id="generator_bot" class="bot toolTip">
-		        			<div id="bot_bar">Generator BOT</div>
-		        		</div>
-		        		<div id="generator_bot_number" class="bot_number">
-		        			<div id="bot_bar">0</div>
+		    	<div id="resources" class="not_displayed pages">
+		    		<div class="sub_page">
+		    			<h1>Resources</h1>
+		    			<p>Resources are found quite easily with the current BOT technology you have. However these resources dont last very long and give a small amount of energy.</p>
+                		<div class="contain">
+                			<div id="batteries" class="button toolTip">
+            	        		<div id="batteries_bar" class="button_bar">Batteries</div>
+		    	    		</div>
+				
+							<div id="wires" class="button toolTip">
+            	        		<div id="wires_bar" class="button_bar">Wires</div>
+		    	    		</div>
+				
+							<div id="lightbulbs" class="button toolTip">
+            	  		      	<div id="lightbulb_bar" class="button_bar">Lightbulb</div>
+		       			 	</div>
+
+		       		 		<div id="water" class="button toolTip">
+            	   		     	<div id="water_bar" class="button_bar">Water</div>
+		       			 	</div>
+
+		       			 	<div id="animals" class="button toolTip">
+            	    	    	<div id="animals_bar" class="button_bar">Animals</div>
+		       			 	</div>
+
+		       		 		<div id="resource_bot" class="bot toolTip">
+		        				<div id="bot_bar">Resource BOT</div>
+		        			</div>
+		        			<div id="resource_bot_number" class="bot_number">
+		        				<div id="bot_bar">0</div>
+		        			</div>
+                		</div>
+		    		</div>
+		    	</div>
+
+		        <div id="generator" class="not_displayed pages">
+		        	<div class="sub_page">
+		        		<div class="contain">
+		        			<h1>Engines</h1>
+		        			<p>Generator are more complex machines, we need more advance BOT in order to find Generators. These Generators do produce a lot of energy and last quite long</p>
+							<div id="generators" class="button toolTip">
+            	        		<div id="generators_bar" class="button_bar">Generator</div>
+		    	    		</div>
+				
+							<div id="chargers" class="button toolTip">
+                	    		<div id="chargers_bar" class="button_bar">Charger</div>
+		    	    		</div>
+				
+							<div id="heaters" class="button toolTip">
+                    			<div id="heaters_bar" class="button_bar">Heat</div>
+		        			</div>
+
+		        			<div id="generator_bot" class="bot toolTip">
+		        				<div id="bot_bar">Generator BOT</div>
+		        			</div>
+		        			<div id="generator_bot_number" class="bot_number">
+		        				<div id="bot_bar">0</div>
+		        			</div>
 		        		</div>
 		        	</div>
 		        </div>
 
 		        <div id="forms" class="not_displayed pages">
-		        	<h1>Forms of Energy</h1>
-		        	<p>Energy in this form can not be seen by the naked eye and thus we need special BOT tech in order to find this kind of energy. Once found the you can gain an unlimited amount of energy.</p>
-		        	<div class="contain">
-		        		<div id="solars" class="button toolTip">
-                    		<div id="solars_bar" class="button_bar">Solar</div>
-		        		</div>
+		        	<div class="sub_page">
+		        		<h1>Forms of Energy</h1>
+		        		<p>Energy in this form can not be seen by the naked eye and thus we need special BOT tech in order to find this kind of energy. Once found the you can gain an unlimited amount of energy.</p>
+		        		<div class="contain">
+		        			<div id="solars" class="button toolTip">
+                    			<div id="solars_bar" class="button_bar">Solar</div>
+		        			</div>
 
-		        		<div id="thermal" class="button toolTip">
-                    		<div id="thermal_bar" class="button_bar">Thermal</div>
-		        		</div>
+		        			<div id="thermal" class="button toolTip">
+                    			<div id="thermal_bar" class="button_bar">Thermal</div>
+		        			</div>
 				
-		        		<div id="chemical" class="button toolTip">
-                    		<div id="chemical_bar" class="button_bar">Chemical</div>
-		        		</div>
+		        			<div id="chemical" class="button toolTip">
+                    			<div id="chemical_bar" class="button_bar">Chemical</div>
+		        			</div>
 
-		        		<div id="electrical" class="button toolTip">
-                    		<div id="electrical_bar" class="button_bar">Electircal</div>
-		        		</div>
+		        			<div id="electrical" class="button toolTip">
+                    			<div id="electrical_bar" class="button_bar">Electircal</div>
+		        			</div>
 
-		        		<div id="forms_bot" class="bot toolTip">
-		        			<div id="bot_bar">Energy BOT</div>
+		        			<div id="forms_bot" class="bot toolTip">
+		        				<div id="bot_bar">Energy BOT</div>
+		        			</div>
+		        			<div id="forms_bot_number" class="bot_number">
+		        				<div id="bot_bar">0</div>
+		        			</div>
 		        		</div>
-		        		<div id="forms_bot_number" class="bot_number">
-		        			<div id="bot_bar">0</div>
-		        		</div>
+		        	</div>
+		        </div>
+
+		        <div id="bots" class="not_displayed pages">
+		        	<div id="bots_subpage" class="sub_page">
+		        	
 		        	</div>
 		        </div>
 
 		        <div id="upgrades" class="not_displayed pages">
-		        	<h1>Upgrades</h1>
-
-		        	<div id="viewport" class="">
-		        		<p>Create a viewport where you can watch all of your BOTS working. While you slouch around <.< </p>
-		        		<div id="viewport" class="button machines toolTip">
-		        			<div id="viewport_bar">Create a Viewport</div>
+		        	<div class="sub_page">
+		        		<h1>Upgrades</h1>
+		        		<div id="more_storage" class="">
+		        			<p>Increase Ship energy capacity</p>
+		        			<div id="more_storage" class="button machines toolTip">
+		        				<div id="more_storage_bar">Increase Capacity</div>
+		        			</div>
 		        		</div>
-		        	</div>
 
-		        	<div id="automation" class="">
-		        		<p>Finally be able to be free from clicking and have all resources automatically turned into energy. Can be toggled in settings</p>
-		        		<div id="automation" class="button machines toolTip">
-		        			<div id="automation_bar">Create Automation</div>
+		        		<div id="viewport" class="">
+		        			<p>Create a viewport where you can watch all of your BOTS working. While you slouch around <.< </p>
+		        			<div id="viewport" class="button machines toolTip">
+		        				<div id="viewport_bar">Create a Viewport</div>
+		        			</div>
 		        		</div>
-		        	</div>
 
-		        	<div id="betterAI" class="">
-		        		<p>Make all your BOTs slightly smarter with better AI technology.</p>
-		        		<div id="betterAI" class="button machines toolTip">
-		        			<div id="betterAI_bar">Create a Better AI</div>
+		        		<div id="automation" class="">
+		        			<p>Finally be able to be free from clicking and have all resources automatically turned into energy. Can be toggled in settings.</p>
+		        			<div id="automation" class="button machines toolTip">
+		        				<div id="automation_bar">Create Automation</div>
+		        			</div>
+		        		</div>
+
+		        		<div id="convert_all" class="">
+		        			<p>Waiting is boring, why not just convert all your resources at once? Can be toggled in settings.</p>
+		        			<div id="convert_all_" class="button machines toolTip">
+		        				<div id="convert_all_bar">Convert all button</div>
+		        			</div>
+		        		</div>
+
+		        		<div id="betterAI" class="">
+		        			<p>Half the cost for all BOTs to upgrade</p>
+		        			<div id="betterAI_" class="button machines toolTip">
+		        				<div id="betterAI_bar">Create a Better AI</div>
+		        			</div>
 		        		</div>
 		        	</div>
 		        </div>
-
 		        <div id="settings" class="not_displayed pages">
-		        	<h1>Settings</h1>
-		        	<p>Options will show as you unlock them</p>
-		        	<div id="automation_toggle" class="not_displayed button">Toggle Automation</div>
-		        	<div id="tooltip_toggle" class="button">Toggle ToolTip</div>
-		        	<div>
-		        		<h4>These will be removed in later versions</h4>
-		        		<div id="manual_save" class="button">Manual Save</div>
-		        		<div id="manual_load" class="button">Manual Load</div>
-		        	</div>
-		        	<!--<div id="restartButton" class="button">Shut Down Production</div>-->
-		        	<div>_____________________________________</div>
-		        	<h2>Background</h2>
-		        	<p>You've been exiled from your home planet on 9/8/12965. Left with nothing but your wits and a small BOT(Benevolent Operation Technology), you're forced to survive with little resources. You realize, it's time to put your BOT to work.</p>
-		        	<div>_____________________________________</div>
-		        	<h2>Some Info</h2>
+		        	<div class="sub_page">
+		        		<h1>Settings</h1>
+		        		<p>Options will show as you unlock them</p>
+		        		<div id="automation_toggle" class="not_displayed button">Toggle Automation</div>
+		        		<div id="convert_all_toggle" class="not_displayed button">Toggle Convert All</div>
+		        		<div id="tooltip_toggle" class="button">Toggle ToolTip</div>
 		        		<div>
+		        			<h4>These will be removed in later versions</h4>
+		        			<div id="manual_save" class="button">Manual Save</div>
+		        			<div id="manual_load" class="button">Manual Load</div>
+		        		</div>
+		        		<!--<div id="restartButton" class="button">Shut Down Production</div>-->
+		        		<div>_____________________________________</div>
+		        		<h2>Background</h2>
+		        		<p>Now exiled from your home planet you are left with nothing but your ship and a small BOT (Benevolent Operation Technology), you are forced to survive with little resources. You realize, it is time to put your BOT to work.</p>
+		        		<div>_____________________________________</div>
+		        		<h2>Some Info</h2>
+		        		<div id="changeLog" style="overflow-y: scroll;">
 		        			<h3>Change Log</h3>
+		        			<div>12/29/15</div>
+		        			<div>___________________</div>
+		        			<div>Introduced <span style="color:rgb(210, 60, 60);">Ship management system!</span> Name your ship and watch as it grows</div>
+		        			<div>_________</div>
+		        			<div>Introduced <span style="color:rgb(210, 60, 60);">2 new resources.</span></div>
+		        			<div>_________</div>
+		        			<div>You can now see all your BOTs and what they are produding.</div>
+		        			<div>_________</div>
+		        			<div>Added <span style="color:rgb(210, 60, 60);">2 new upgrades</span> and reworked the BOT AI upgrade.</div>
+		        			<div>_________</div>
+		        			<div>Made all items more rare but valuable.</div>
+		        			<div>_________</div>
+		        			<div>Auto load now replaced with manual load for now.</div>
+		        			<div>_________</div>
+		        			<div>Plus many more tweaks to game play and balancing.</div>
+		        			<div>_________</div>
+		        			<br>
+		        			<br>
+
+		        			<div><span style="color:rgb(60, 210, 60);">Next update 1/??/15<span style="color:rgb(210, 60, 60);"></div>
+		        			<div>___________________</div>
+		        			<div>Random Events</div>
+		        			<div>_________</div>
+		        			<div>Upgradable player</div>
+		        			<div>_________</div>
+		        			<div>Fighting mechanism</div>
+		        			<div>_________</div>
+		        			<div>Condensed</div>
+		        			<div>_________</div>
+		        			<div>10 more resources and more bots</div>
+		        			<div>_________</div>
+		        			<div>1 new bot will be added every update</div>
+		        			<div>_________</div>
+		        			<div>A fixed auto load</div>
+		        			<div>_________</div>
+		        			<div>Plus small tweaks to game play and balancing.</div>
+		        			<div>_________</div>
+		        			<br>
+		        			<br>
+
 		        			<div>12/13/15</div>
 		        			<div>___________________</div>
 		        			<div>Rework of layout.</div>
@@ -170,6 +277,7 @@
 		        			<div>_________</div>
 		        			<br>
 		        			<br>
+
 		        			<div>First Release</div>
 		        			<div>___________________</div>
 		        			<div><a href="http://happy-loman.github.io/Energy/">The first game</a></div>
@@ -182,15 +290,17 @@
 		        		<div>This game is a prototype, expect bugs</div>
 		        		<br>
 		        		<br>
-		        		<div>Version 0.0.1</div>
+		        		<div>Version 0.1.9</div>
 		        		<br>
 		        		<br>
+		        	</div>
 		        </div>
 		</div>
     </div>
 	<script type="text/javascript" src="script.js"></script>
     <script type="text/javascript" src="camera.js" ></script>
 	<script type="text/javascript" src="cell.js"></script>
+	<script type="text/javascript" src="ship.js"></script>
 	<script type="text/javascript" src="bot.js"></script>
 	<script type="text/javascript" src="machines.js"></script>
 	<script type="text/javascript" src="clickedButton.js"></script>
@@ -199,3 +309,6 @@
 </body>
 </html>
 
+		       <!-- <div class="console">
+          			<ul id='example_messages' class="example-chat-messages" style="overflow-y:auto;padding:5px; overflow-x:hidden;"></ul> 
+        		</div> -->
