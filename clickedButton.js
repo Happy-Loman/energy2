@@ -52,7 +52,7 @@ $("#energy_bar").click(function(){
 });
 
 $("#energy_bar").hover(function(){
-    mouse.display = "This is your ship's energy without it you have no power. Keep it filled by clicking the back bar.";
+    mouse.display = "This is your ship's energy without it you have no power. Keep it filled by clicking the black bar.";
 });
 
 $("#ship_engine").click(function(){
