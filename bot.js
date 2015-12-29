@@ -1,4 +1,5 @@
 var bots = [];
+
 var botFarm = {
     energyForNextBot: 10,
     energyForNextBotGrowthRate: 3.5,
@@ -26,9 +27,9 @@ var generatorBot = {
     color:"lightblue",
     amount:0,
     cost: {
-        batteries: 2000,
-        wires:1100,
-        lightbulbs:940,
+        batteries: 1000,
+        wires:600,
+        lightbulbs:540,
         energy: 1100,
         pureEnergy: 1000000 * 10.2,
         met:false,
@@ -44,9 +45,9 @@ var formsBot = {
         batteries: 450,
         wires:320,
         energy: 10010,
-        generators: 20,
+        generators: 54,
         chargers: 35,
-        heaters: 54,
+        heaters: 24,
         pureEnergy: 1000000 * 24.8,
         met:false,
     },
@@ -97,7 +98,7 @@ function checkBotCostMet(object){
             resources.batteries.amount -= object.cost.batteries;
             resources.wires.amount -= object.cost.wires;
             engines.generators.amount -= object.cost.generators;
-            engines.engines.chargers.amount -= object.cost.chargers;
+            engines.chargers.amount -= object.cost.chargers;
             engines.heaters.amount -= object.cost.heaters;
             cell.energy -= object.cost.energy;
 
@@ -113,7 +114,7 @@ function checkBotCostMet(object){
             object.cost.energy += (object.cost.energy * 0.5);
         } else if(cell.energy > object.cost.pureEnergy){
             cell.energy -= object.cost.pureEnergy;
-            object.cost.pureEnergy += (object.cost.energy * 0.5);
+            object.cost.pureEnergy += (object.cost.pureEnergy * 0.5);
             object.cost.met = true;
         } else {
             object.cost.met = false;
@@ -128,8 +129,9 @@ function addNewBot(object){
         return 0;
     }
     object.amount++;
-    GID(object.id).innerHTML = object.amount;
     bots.push({
+        object:object,
+        id: object.id,
         indx: botFarm.botIndx,
         single:true,
         x: cw/2,
@@ -138,18 +140,29 @@ function addNewBot(object){
         og_r:5,
         color: object.color,
         text_color:"white",
+        last_find:"nothing",
         //100 is bad//
-        smartness:100, //Betwwen 20 and 100//
+        smartness:1000, //Betwwen 20 and 100//
+        find_per_tick:1,
+        AI_lvl:0,
+        finds_for_next_lvl:500,
+        og_finds_for_next_lvl:500,
+        total_finds:0,
         vx: randNum(-10, 10),
         vy: randNum(-10, 10),
         speed: 10,
         energy:1,
         type:object.type,
-        chanceToFind:botFarm.CTF,
-        produceRate:botFarm.PR,
-        max_storage:botFarm.MS,
         launching: true,
-        active:true,                                                                                                                                                                                                                                                                                                                                                                      
+        active:true,       
+        time: {
+            curr:0,
+            max: 1000,//seconds
+        }, 
+        storage: {
+            resource_amount:0,
+            max: 100,
+        },                                                                                                                                                                                                                                                                                                                                                                    
     });
     botFarm.botIndx++;
     activeBots++;
@@ -157,6 +170,8 @@ function addNewBot(object){
 
 function addNewBot_(type){
     bots.push({
+        object:resourceBot,
+        id:"resource_bot_number",
         indx: botFarm.botIndx,
         single:true,
         x: cw/2,
@@ -165,18 +180,29 @@ function addNewBot_(type){
         og_r:5,
         color: "red",
         text_color:"white",
+        last_find:"nothing",
         //100 is bad//
-        smartness:100, //Betwwen 20 and 100//
+        smartness:1000, //Betwwen 20 and 100//
+        find_per_tick:1,
+        AI_lvl:0,
+        finds_for_next_lvl:500,
+        og_finds_for_next_lvl:500,
+        total_finds:0,
         vx: randNum(-10, 10),
         vy: randNum(-10, 10),
         speed: 10,
         energy:1,
         type:type,
-        chanceToFind:botFarm.CTF,
-        produceRate:botFarm.PR,
-        max_storage:botFarm.MS,
         launching: true,
-        active:true,                                                                                                                                                                                                                                                                                                                                                                      
+        active:true,     
+        time: {
+            curr:0,
+            max: 500,//seconds
+        },      
+        storage: {
+            resource_amount:0,
+            max: 100,
+        },                                                                                                                                                                                                                                                                                                                                                             
     });
     botFarm.botIndx++;
     activeBots++;
@@ -202,12 +228,58 @@ function bot_draw(){
     ctx.restore();
 }
 
+addNewBot_("resource");
+var pg = $('#bots_subpage');
+function addDiv(text){
+    return "<div id=\"bot_display\" class=\"button\">" + text + "</div>";
+}
+
+var bot_display_text;
+var page = 1;
+function display_bots(){
+    GID("bots_subpage").innerHTML = "";
+    if(bots.length <= 100){
+        for(var i = 0; i < bots.length; i++){
+            var bot = bots[i];
+            bot_display_text = "<div id=\"bot_display_" + i + "\" class=\"bot_display\">" + "<h2>" + "BOT " + (i+1) + "</h2>" + "<span class=\"box\">"+bot.type.toUpperCase()+"</span>" + "<div class=\"toolTip\">AI Level: " + bot.AI_lvl.toFixed(0) + "</div> <div>Next Level: " + (bot.finds_for_next_lvl - bot.total_finds).toFixed(0) + "</div> <div id=\"bot_progress" + i + "\" class=\"bot_progressbar\">" + (bot.time.max-bot.time.curr).toFixed(0) + "</div> <div>Last Find: " + bot.last_find + "</div> </div>";
+            pg.append(bot_display_text);
+
+            "<div id=\"bot_display + \i\ + \"" + "> </div>"
+        }
+    } else {
+        for(var i = 0; i < 100; i++){
+            var bot = bots[i];
+            bot_display_text = "<div id=\"bot_display_" + i + "\" class=\"bot_display\">" + "<h2>" + "BOT " + (i+1) + "</h2>" + "<span class=\"box\">"+bot.type.toUpperCase()+"</span>" + "<div class=\"toolTip\">AI Level: " + bot.AI_lvl.toFixed(0) + "</div> <div>Next Level: " + (bot.finds_for_next_lvl - bot.total_finds).toFixed(0) + "</div> <div id=\"bot_progress" + i + "\" class=\"bot_progressbar\">" + (bot.time.max-bot.time.curr).toFixed(0) + "</div> <div>Last Find: " + bot.last_find + "</div> </div>";
+            pg.append(bot_display_text);
+
+            "<div id=\"bot_display + \i\ + \"" + "> </div>"
+        }
+    } /*else {
+        for(var i = (page * 2); i < ((page * 2) * 2); i++){
+            var bot = bots[i];
+            bot_display_text = "<div id=\"bot_display\" class=\"bot_display\">" + "<h2>" + "BOT " + (i+1) + "</h2>" + bot.type.toUpperCase() + " BOT <div>AI Level: " + bot.AI_lvl + "</div> <div>Progress: " + (bot.storage.resource_amount/bot.storage.max*100).toFixed(1) + "%</div> <div>Active: " + bot.active + "</div> </div>";
+            pg.append(bot_display_text);
+        }
+    }*/
+}
+
 var freshStart = false;
 function bot_update(){
+    var id = 0;
     for (var i = 0; i < bots.length; i++) {
         var bot = bots[i];
         bot.x += bot.vx;
         bot.y += bot.vy;
+
+        if(bot.total_finds >= bot.finds_for_next_lvl){
+            bot.AI_lvl += 1;
+            bot.finds_for_next_lvl = bot.og_finds_for_next_lvl + (bot.og_finds_for_next_lvl * 0.48);
+            bot.og_finds_for_next_lvl = bot.finds_for_next_lvl;
+            bot.storage.max += Math.round(bot.storage.max * 0.7);
+        }
+
+
+        bot.find_per_tick = (bot.AI_lvl + 1);
 
         if(bot_checkCollision(bot, cell) && !bot.active){
             cell.absorbEnergy(bot, 0);
@@ -236,66 +308,96 @@ function bot_update(){
                 bot.vy = -bot.vy;
             }
         }
+        GID(bot.id).innerHTML = bot.object.amount;
     };
+    if(curr_page == "bots"){
+        display_bots();
+    }
+    for(var i = 0; i < bots.length; i++){
+        var bot = bots[i];
+        $("#bot_progress" + i).css("width", ((bot.time.curr/bot.time.max) * 180) + "px");
+    }
 }
 
-/*function get_bot_info(index){
-    if(botIndx > 0){
-        bot = bots[index];
-        UI.bot.botNum = bot.indx + 1;
-        UI.bot.max = bot.max_storage;
-        UI.bot.currentEnergy = bot.energy;
-        UI.bot.chanceToFind = bot.chanceToFind;
-        UI.bot.eForNextBot = bot.energyForNextBot;
-        UI.bot.status = bot.status;
-    }
-}*/
-
-/*function bot_production(){
-    if(cell.energy >= botFarm.energyForNextBot){
-        addNewBot();
-        botFarm.CTF += 0.3;
-        botFarm.PR *= 2;
-        botFarm.MS *= 2.5;
-        console.log("welp!");
-        botFarm.energyForNextBot *= botFarm.energyForNextBotGrowthRate;
-    }
-}*/
-
 function bot_gather(object){
-    //cell.energy -= 0.5;
     var ran =  randNum(0, object.smartness);
     object.color = "White";
     var ang = return_angle(object.x, object.y, randNum(map_w, -map_w), randNum(map_h, -map_h));
     if(object.type == "resource"){
-        var res = resources_[Math.round(randNum(0, 2))];
+        object.time.curr++;//update the bot active time//
+        var res = resources_[Math.round(randNum(0, 4))];
+        //Check if bot time has reached peak//
+        if(object.time.curr >= object.time.max){
+            res.amount += object.storage.resource_amount;
+            if(res.types.second == "energy"){
+                parts.amount += object.storage.resource_amount;
+            }
+            object.last_find = object.storage.resource_amount + " " + res.resource;
+            object.storage.resource_amount = 0;
+            object.time.curr = 0;
+        }
         if(ran < res.rarity){
-            res.amount += 1;
-            parts.amount += 1;
+            object.storage.resource_amount += object.find_per_tick;
+            object.total_finds += object.find_per_tick;
+            if(object.storage.resource_amount >= object.storage.max){
+                res.amount += object.storage.resource_amount;
+                if(res.types.second != "energy"){
+                    parts.amount += object.storage.resource_amount;
+                }
+                object.last_find = object.storage.resource_amount + " " + res.resource;
+                object.storage.resource_amount = 0;
+                object.time.curr = 0;
+            }
         }
     } else if(object.type == "engines"){
+        object.time.curr++;//add one to the bot active time//
         var eng = engines_[Math.round(randNum(0, 2))];
+        //Check if bot time has reached peak//
+        if(object.time.curr >= object.time.max){
+            eng.amount += object.storage.resource_amount;
+            object.last_find = object.storage.resource_amount + " " + eng.resource;
+            object.storage.resource_amount = 0;
+            object.time.curr = 0;
+        }
         if(ran < eng.rarity){
             var rand = randNum(0, 50);
-            if(rand < 7){
-                eng.amount += 1;
-                parts.amount += 1;
+            if(rand < 40){
+                object.storage.resource_amount += object.find_per_tick;
+                object.total_finds += object.find_per_tick;
+                if(object.storage.resource_amount >= object.storage.max){
+                    eng.amount += object.storage.resource_amount;
+                    parts.amount += object.storage.resource_amount;
+                    object.last_find = object.storage.resource_amount + " " + eng.resource;
+                    object.storage.resource_amount = 0;
+                    object.time.curr = 0;
+                }
             }
         }
     } else if(object.type == "forms"){
+        object.time.curr++;//add one to the bot active time//
         var form = forms_[Math.round(randNum(0, 3))];
+        //Check if bot time has reached peak//
+        if(object.time.curr >= object.time.max){
+            form.amount += object.storage.resource_amount;
+            object.last_find = object.storage.resource_amount + " " + form.resource;
+            object.storage.resource_amount = 0;
+            object.time.curr = 0;
+        }
         if(ran < form.rarity){
-            var rand = randNum(0, 50);
+            var rand = randNum(0, 60);
             if(rand < 3){
-                form.amount += 1;
-                parts.amount += 1;
+                object.storage.resource_amount += object.find_per_tick;
+                object.total_finds += object.find_per_tick;
+                if(object.storage.resource_amount >= object.storage.max){
+                    form.amount += object.storage.resource_amount;
+                    parts.amount += object.storage.resource_amount;
+                    object.last_find = object.storage.resource_amount + " " + eng.resource;
+                    object.storage.resource_amount = 0;
+                    object.time.curr = 0;
+                }
             }
         }
-    } /*else if(object.type == "energy"){
-        if(ran < object.chanceToFind){
-            object.energy += randNum(object.produceRate/3.5, object.produceRate);
-        }
-    }*/
+    }
 
     if(ran < 2 && !bot_checkCollision(object, cell)){
         object.vx = Math.cos(ang) * -object.speed;
@@ -361,12 +463,8 @@ function bot_absorbEnergy(object, object2, amount){
         }
     };
 }
+//Display all bots on the page//
 
-addNewBot_("resource");
-//addNewBot("engines");
-
-/*var ang = 0;
-window.setInterval(function(){
-    bot.vx = Math.cos(randNum(-360, 360)) * bot.speed;
-    bot.vy = Math.sin(randNum(-360, 360)) * bot.speed;
-}, 1000 * (randNum(1, 7)));*/
+//var innerDiv = document.createElement('div');
+//innerDiv.className = 'block-2';
+//iDiv.appendChild(innerDiv)
