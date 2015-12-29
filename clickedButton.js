@@ -254,7 +254,7 @@ $("#electrical").hover(function(){
 //////////////////////////////////////////////////////////////
 
 /////////////////Navigation Click events/////////////////////
-var curr_page = "ship"
+var curr_page = "resources"
 $("#ship_nav").click(function(){
     $("#" + curr_page).toggleClass("not_displayed");
     $("#ship").toggleClass("not_displayed");
