@@ -2,7 +2,7 @@ var cell = {
   single:true,
 	x: camera.x,
   y: camera.y,
-	energy:0,
+	energy:100,
 	color: "rgba(104, 155, 205, 0.3)",
 	og_r:100,
 	r: 100 + zoom.scale,
@@ -56,29 +56,6 @@ var cell = {
         var dis = return_distance(this.x, this.y, obj.x, obj.y);
         if (dis < (this.r) + obj.r) {
           return true;
-        }
-      }
-    }
-  },
-
-  absorbEnergy: function(object, amount){
-    if(object.single){
-      this.energy += object.energy;
-      object.energy -= object.energy;
-    } else {
-      for (var i = 0; i < object.length; i++) {
-        var obj = object[i];
-        var player_dToPkt = return_distance(this.x, this.y, obj.x, obj.y);
-
-        if ((player_dToPkt < (this.r) + obj.r)) {  
-          if(amount > 0){
-            this.energy += amount;
-            obj.energy -= amount;
-          } else {
-            this.energy += obj.energy;
-            obj.energy -= obj.energy;
-          }
-          object.splice(obj.pos, 1, 0);
         }
       }
     }
