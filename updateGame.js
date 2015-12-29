@@ -95,6 +95,8 @@ window.setInterval(function(){
     bot_draw();
     bot_update();
 
+    update_ship();
+    update_ship_UI();
     update_stars();
     update_resources();
     update_engines();
